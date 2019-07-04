@@ -338,13 +338,10 @@ class DropboxFS(FS):
 
     def exists(self, path):
         path = self.fix_path(path)
-
         try:
-
             self.getinfo(path)
             return True
-
-        except Exception as e:
+        except errors.ResourceNotFound as e:
             return False
 
     def move(self, src_path, dst_path, overwrite=False):
