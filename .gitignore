@@ -6,9 +6,12 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+.eggs/
 
 # MacOS
 .DS_Store
 
-.idea
-.eggs
+# Development
+.idea/
+.pytest_cache
+.python-version
