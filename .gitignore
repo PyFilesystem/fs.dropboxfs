@@ -13,5 +13,5 @@ dist/
 
 # Development
 .idea/
-.pytest_cache
+.pytest_cache/
 .python-version
