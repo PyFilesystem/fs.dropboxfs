@@ -234,7 +234,6 @@ class DropboxFS(FS):
         return SubFS(self, path)
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-
         path = self.fix_path(path)
         _mode = Mode(mode)
         mode = _mode
@@ -245,20 +244,29 @@ class DropboxFS(FS):
         with self._lock:
             try:
                 info = self.getinfo(_path)
-                log.debug("Info: %s", info)
             except errors.ResourceNotFound:
                 if not _mode.create:
-                    raise errors.ResourceNotFound(path)
-                # Check the parent is an existing directory
-                if not self.getinfo(self.get_parent(_path)).is_dir:
-                    raise errors.DirectoryExpected(path)
-            else:
-                if info.is_dir:
-                    raise errors.FileExpected(path)
+                    raise
+
+                # Target doesn't exist and we're in create mode. Ensure the
+                # parent is an existing directory before we try to create a file
+                # in it.
+                parent_path = self.get_parent(_path)
+
+                # Can't use self.isdir() because it doesn't crash if the
+                # directory doesn't exist, and we don't want to stat a file twice
+                # if we can avoid it.
+                info = self.getinfo(parent_path)
+                if not info.is_dir:
+                    raise errors.DirectoryExpected(parent_path)
+                return DropboxFile(self.dropbox, path, mode)
+
+            # Target exists.
+            if info.is_dir:
+                raise errors.FileExpected(path)
             if _mode.exclusive:
                 raise errors.FileExists(path)
-
-        return DropboxFile(self.dropbox, path, mode)
+            return DropboxFile(self.dropbox, path, mode)
 
     def remove(self, path):
         _path = self.fix_path(path)
@@ -330,13 +338,10 @@ class DropboxFS(FS):
 
     def exists(self, path):
         path = self.fix_path(path)
-
         try:
-
             self.getinfo(path)
             return True
-
-        except Exception as e:
+        except errors.ResourceNotFound as e:
             return False
 
     def move(self, src_path, dst_path, overwrite=False):

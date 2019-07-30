@@ -1,6 +1,11 @@
 Release History
 ===============
 
+0.2.2
+-----
+
+Add support for ``fs`` versions 2.1 through 2.4.
+
 0.2.1
 -----
 
