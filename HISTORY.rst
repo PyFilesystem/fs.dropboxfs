@@ -1,6 +1,11 @@
 Release History
 ===============
 
+0.2.2-post1
+-----------
+
+Fixed bug in ``setup.cfg`` that made README not show up on PyPI.
+
 0.2.2
 -----
 
