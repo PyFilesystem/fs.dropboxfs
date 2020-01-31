@@ -2,6 +2,7 @@ Release History
 ===============
 
 0.2.2-post2
+-----------
 
 Fixed installation problem. Closes `#6 <https://github.com/PyFilesystem/fs.dropboxfs/issues/6>`_.
 
