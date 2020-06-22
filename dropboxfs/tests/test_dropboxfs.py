@@ -16,7 +16,7 @@ def join(a, b):
 class TestDropboxFS(FSTestCases, unittest.TestCase):
     def make_fs(self):
         # Return an instance of your FS object here
-        self.access_token = "GiQj7BV19aAAAAAAAAAACAevudx3Rxyca3vKenwRV9suPJ2sWKw3Bm6rC9CpxDM2"
+        self.access_token = "olshmk5XitgAAAAAAAAJnRpQ3mrGJq5kmsI6QvycvC2kT8p18SsajOlhWV511oAd"
 
         if "DEV" in os.environ:
             proxies = {
