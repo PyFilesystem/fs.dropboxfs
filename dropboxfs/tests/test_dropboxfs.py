@@ -5,6 +5,7 @@ import unittest
 
 from dropbox import create_session
 from fs.test import FSTestCases
+import fs.subfs
 
 from dropboxfs.dropboxfs import DropboxFS
 
@@ -12,6 +13,8 @@ from dropboxfs.dropboxfs import DropboxFS
 def join(a, b):
     return a + b
 
+
+TEST_PATH = 'dropboxfs'
 
 class TestDropboxFS(FSTestCases, unittest.TestCase):
     def make_fs(self):
@@ -27,13 +30,15 @@ class TestDropboxFS(FSTestCases, unittest.TestCase):
             sess = create_session(8, proxies=proxies)
         else:
             sess = None
-        fs = DropboxFS(self.access_token, session=sess)
+        dfs = DropboxFS(self.access_token, session=sess)
 
-        for f in fs.listdir("/"):
-            f = fs.fix_path(f)
-            fs.dropbox.files_delete_v2(f)
+        if dfs.exists(TEST_PATH):
+            dfs.removetree(TEST_PATH)
+        dfs.makedir(TEST_PATH)
 
-        return fs
+        fs2 = fs.subfs.SubFS(dfs, TEST_PATH)
+        return fs2
+
 
     def test_case_sensitive(self):
         # dropbox  insesitive
