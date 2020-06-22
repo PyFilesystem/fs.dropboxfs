@@ -4,12 +4,11 @@ dist: xenial
 sudo: required
 python:
   - '2.7'
-  - '3.5'
-  - '3.6'
   - '3.7'
+  - '3.9-dev'
   - '3.8-dev'
   - 'pypy'
-  - 'pypy3.5'
+  - 'pypy3.7'
 env:
     - DROPBOX_ACCESS_TOKEN=GiQj7BV19aAAAAAAAAAACAevudx3Rxyca3vKenwRV9suPJ2sWKw3Bm6rC9CpxDM2
 
